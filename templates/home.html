@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <div class="columns is-centered">
+        <div class="column"></div>
+        <div class="column">
+            <h2 class="title has-text-centered">VND Classifier</h2>
+            <!-- Camera view -->
+            <div class="content is-flex is-horizontal-center">
+                <video id="video" width="400" height="300"></video>
+            </div>
+            <br>
+            <a href="#" id="capture" class="button is-link is-fullwidth is-rounded">Take photo</a>
+            <br>
+            <div class="content is-flex is-horizontal-center">
+                <canvas id="canvas" width="400" height="300"></canvas>
+                <img id="photo" src="https://via.placeholder.com/400x300" alt="Photo">
+            </div>
+        </div>
+        <div class="column"></div>
+
+    </div>
+</div>
+{% endblock %}
