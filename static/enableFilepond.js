@@ -25,7 +25,6 @@ FilePond.setOptions({
   labelIdle: 'File to upload',
   server: {
     process: './classify',
-    // "https://asia-east2-cloud-next-demo-242611.cloudfunctions.net/upload_image",
     fetch: null,
     revert: null,
     restore: null,
@@ -37,16 +36,30 @@ const pond = FilePond.create(document.querySelector('input[type="file"]'));
 var replaced = false;
 pond.on("processfile", (error, file) => {
   if (error === null) {
-    let id = file.serverId;
-    console.log(id);
-    // let uploadFileIdInputNode = document.querySelector(`#image`);
-    // uploadFileIdInputNode.value = id;
+    let data = JSON.parse(file.serverId);
+    console.log(data);
+    let prediction = document.querySelector(`#prediction`);
+    let outputTable = document.querySelector(`#output`);
+
+    prediction.innerHTML = 'Prediction: ' + data[1].toString();
+    max = data[2][0];
+    max_index = 0;
+    for (i = 0; i < data[2].length; i++) {
+      outputTable.rows[i + 1].cells[1].innerHTML = data[2][i].toString();
+      outputTable.rows[i + 1].classList.remove('is-selected');
+      if (data[2][i] > max) {
+        max = data[2][i];
+        max_index = i;
+      }
+
+    }
+    outputTable.rows[max_index + 1].classList.add('is-selected');
   }
 });
 
 pond.on("removefile", (error, file) => {
   if (error === null && !replaced) {
-    document.getElementById('photo').setAttribute('src', 'https://via.placeholder.com/400x300/jpg');
+    document.getElementById('photo').setAttribute('src', 'https://via.placeholder.com/400x250/jpg');
   }
   replaced = false;
 });

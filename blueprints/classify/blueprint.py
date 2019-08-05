@@ -2,13 +2,17 @@
 This module is the Flask Blueprint for the classify API (/classify)
 """
 
-from flask import Blueprint, redirect, url_for, request
+from flask import Blueprint, redirect, url_for, request, jsonify
 from wand.image import Image
+from fastai.vision import *
+from io import BytesIO
 
 import uuid
 
 
 classifier = Blueprint('classifier', __name__)
+
+learner = load_learner('static/model/')
 
 
 @classifier.route('/classify', methods=['POST'])
@@ -35,10 +39,14 @@ def process():
     if not file:
         return ("File not found", 400, headers)
 
-    data = file.read()
-    with Image(blob=data) as image:
-        converted_image = image.make_blob(format='jpg')
+    # img = open_image(file.read())
+    # with Image(blob=data) as image:
+    #     converted_image = image.make_blob(format='jpg')
+
+    img = open_image(BytesIO(file.read()))
 
     id = uuid.uuid4().hex
 
-    return (id, 200, headers)
+    pred_class, pred_idx, outputs = learner.predict(img)
+
+    return (jsonify([id, str(pred_class), [float(i) for i in outputs]]), 200, headers)
