@@ -28,3 +28,13 @@ conda activate currency-classifier
 pip install -r requirements.txt
 ```
 
+Install Wand problem: it seems like Wand doesn't support imagemagick 7 yet. Install the older version:
+```
+brew install imagemagick@6
+export MAGICK_HOME=/usr/local/opt/imagemagick@6 i
+```
+
+I used Filepond for uploading the image to server. All you need to know is in the documentation: https://pqina.nl/filepond/docs/print-version/#filepond-instance
+
+
+

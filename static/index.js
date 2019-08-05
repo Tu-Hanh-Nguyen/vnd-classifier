@@ -5,6 +5,7 @@
     var photo = document.getElementById('photo');
     var vendorUrl = window.URL || window.webkitURL;
 
+
     navigator.getMedia = navigator.getUserMedia ||
         navigator.webkitGetUserMedia ||
         navigator.mozGetUserMedia ||
@@ -23,6 +24,6 @@
 
     document.getElementById('capture').addEventListener('click', function () {
         context.drawImage(video, 0, 0, 400, 300);
-        photo.setAttribute('src', canvas.toDataURL('image/img'));
+        photo.setAttribute('src', canvas.toDataURL('image/jpeg'));
     });
 })();
