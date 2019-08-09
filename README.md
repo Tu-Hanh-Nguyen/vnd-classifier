@@ -37,4 +37,21 @@ export MAGICK_HOME=/usr/local/opt/imagemagick@6 i
 I used Filepond for uploading the image to server. All you need to know is in the documentation: https://pqina.nl/filepond/docs/print-version/#filepond-instance
 
 
+## Part 2
 
+Before you begin, create a new Google Cloud Platform project:
+* Sign into [Google Cloud Console](https://console.cloud.google.com/) with your Google Account.
+* Click Select a project or the name of your existing project at the top of the page.
+* Click New project and follow the prompts on screen.
+* Enable Billing. Google Cloud Platform provides $300 credit for new customers, and your usage may be eligible for Google Cloud Platform free-tier. For more information, see [GCP Free Tier](https://cloud.google.com/free/).
+* Install [Google Cloud SDK](https://cloud.google.com/sdk/).
+
+Plan:
+* Implement authentication
+* setup firestore and cloud storage
+* build model/image_catalog/ for modeling image in firestore
+* setup cloud function to save image into Cloud Storage
+* upload image to the cloud function and add new image_id in firestore
+* Model in Tensorflow
+* Deploy the model
+* 

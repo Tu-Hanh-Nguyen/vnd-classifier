@@ -11,8 +11,12 @@ import uuid
 
 
 classifier = Blueprint('classifier', __name__)
-
-learner = load_learner('static/model/')
+path = 'static/model/'
+learner = load_learner(path)
+# classes = ['1000', '10000', '100000', '2000',
+#            '20000', '200000', '5000', '50000', '500000']
+# dataBunch = ImageDataBunch.single_from_classes(
+#     path, classes, tfms=get_transforms(), size=224).normalize(imagenet_stats)
 
 
 @classifier.route('/classify', methods=['POST'])
