@@ -4,19 +4,30 @@ This module is the Flask Blueprint for the classify API (/classify)
 
 from flask import Blueprint, redirect, url_for, request, jsonify
 from wand.image import Image
-from fastai.vision import *
+
+import tensorflow as tf
+import tensorflow_hub as hub
+from tensorflow.keras import layers
+
 from io import BytesIO
+import numpy as np
 
 import uuid
 
 
 classifier = Blueprint('classifier', __name__)
 path = 'static/model/'
-learner = load_learner(path)
-# classes = ['1000', '10000', '100000', '2000',
-#            '20000', '200000', '5000', '50000', '500000']
-# dataBunch = ImageDataBunch.single_from_classes(
-#     path, classes, tfms=get_transforms(), size=224).normalize(imagenet_stats)
+model = tf.keras.experimental.load_from_saved_model(
+    path, custom_objects={'KerasLayer': hub.KerasLayer})
+classes = [5000, 10000]
+
+
+def preprocess_image(image):
+    image = tf.image.decode_jpeg(image, channels=3)
+    image = tf.image.resize(image, [224, 224])
+    image /= 255.0  # normalize to [0,1] range
+
+    return image
 
 
 @classifier.route('/classify', methods=['POST'])
@@ -47,10 +58,12 @@ def process():
     # with Image(blob=data) as image:
     #     converted_image = image.make_blob(format='jpg')
 
-    img = open_image(BytesIO(file.read()))
+    img_raw = file.read()
 
     id = uuid.uuid4().hex
 
-    pred_class, pred_idx, outputs = learner.predict(img)
+    outputs = model.predict(np.array([preprocess_image(img_raw)]))[0]
 
-    return (jsonify([id, str(pred_class), [float(i) for i in outputs]]), 200, headers)
+    pred_class = classes[np.argmax(outputs)]
+
+    return (jsonify([id, str(pred_class), [float(i) for i in outputs]), 200, headers)
