@@ -25,5 +25,9 @@
     document.getElementById('capture').addEventListener('click', function () {
         context.drawImage(video, 0, 0, 400, 250);
         photo.setAttribute('src', canvas.toDataURL('image/jpeg'));
+        canvas.toBlob(function (blob) {
+            pond.addFile(blob);
+            replaced = true;
+        }, 'image/jpeg');
     });
 })();

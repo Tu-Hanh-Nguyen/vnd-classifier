@@ -4,9 +4,9 @@ This module is the Flask Blueprint for the classify API (/classify)
 
 from flask import Blueprint, redirect, url_for, request, jsonify
 
-from helpers import image_catalog
-from google.cloud import firestore
-from google.cloud import storage
+# from helpers import image_catalog
+# from google.cloud import firestore
+# from google.cloud import storage
 
 import os
 import time
@@ -27,9 +27,9 @@ model = tf.keras.experimental.load_from_saved_model(
     path, custom_objects={'KerasLayer': hub.KerasLayer})
 classes = [5000, 10000]
 
-BUCKET = os.environ.get('GCS_BUCKET')
-FILENAME_TEMPLATE = '{}.png'
-client = storage.Client()
+# BUCKET = os.environ.get('GCS_BUCKET')
+FILENAME_TEMPLATE = '{}.jpg'
+# client = storage.Client()
 
 
 def preprocess_image(image):
@@ -64,23 +64,26 @@ def process():
     if not file:
         return ("File not found", 400, headers)
     img_raw = file.read()
+    open(os.path.join('uploads/', FILENAME_TEMPLATE.format(file.filename)),
+         'wb').write(img_raw)
 
     # img = open_image(file.read())
     # with Image(blob=data) as image:
     #     converted_image = image.make_blob(format='jpg')
 
     id = uuid.uuid4().hex
-    filename = FILENAME_TEMPLATE.format(id)
 
-    bucket = client.get_bucket(BUCKET)
-    blob = bucket.blob(filename)
-    blob.upload_from_string(converted_image, content_type='image/jpg')
+    # Integrate with Firebase
+    # filename = FILENAME_TEMPLATE.format(id)
+    # bucket = client.get_bucket(BUCKET)
+    # blob = bucket.blob(filename)
+    # blob.upload_from_string(converted_image, content_type='image/jpg')
 
-    image = image_catalog.Image(user_confirmed='',
-                                image_url=filename,
-                                label='',
-                                created_at=int(time.time()))
-    image_id = image_catalog.add_image(image)
+    # image = image_catalog.Image(user_confirmed='',
+    #                             image_url=filename,
+    #                             label='',
+    #                             created_at=int(time.time()))
+    # image_id = image_catalog.add_image(image)
 
     img_preprocessed = preprocess_image(img_raw)
     outputs = model.predict(tf.expand_dims(img_preprocessed, 0))[0]

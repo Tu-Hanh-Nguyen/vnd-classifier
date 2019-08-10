@@ -64,17 +64,9 @@ pond.on("processfile", (error, file) => {
   }
 });
 
-pond.on("removefile", (error, file) => {
-  if (error === null && !replaced) {
-    document.getElementById('photo').setAttribute('src', 'https://via.placeholder.com/400x250/jpg');
-  }
-  replaced = false;
-});
-
-var canvas = document.getElementById('canvas');
-document.getElementById('capture').addEventListener('click', function () {
-  canvas.toBlob(function (blob) {
-    pond.addFile(blob);
-    replaced = true;
-  }, 'image/jpeg');
-});
+// pond.on("removefile", (error, file) => {
+//   if (error === null && !replaced) {
+//     document.getElementById('photo').setAttribute('src', 'https://via.placeholder.com/400x250/jpg');
+//   }
+//   replaced = false;
+// });
