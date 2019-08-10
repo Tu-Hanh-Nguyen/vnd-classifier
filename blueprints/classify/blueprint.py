@@ -3,7 +3,13 @@ This module is the Flask Blueprint for the classify API (/classify)
 """
 
 from flask import Blueprint, redirect, url_for, request, jsonify
-from wand.image import Image
+
+from helpers import image_catalog
+from google.cloud import firestore
+from google.cloud import storage
+
+import os
+import time
 
 import tensorflow as tf
 import tensorflow_hub as hub
@@ -20,6 +26,10 @@ path = 'static/model/'
 model = tf.keras.experimental.load_from_saved_model(
     path, custom_objects={'KerasLayer': hub.KerasLayer})
 classes = [5000, 10000]
+
+BUCKET = os.environ.get('GCS_BUCKET')
+FILENAME_TEMPLATE = '{}.png'
+client = storage.Client()
 
 
 def preprocess_image(image):
@@ -53,17 +63,27 @@ def process():
     file = request.files.get('filepond')
     if not file:
         return ("File not found", 400, headers)
+    img_raw = file.read()
 
     # img = open_image(file.read())
     # with Image(blob=data) as image:
     #     converted_image = image.make_blob(format='jpg')
 
-    img_raw = file.read()
-
     id = uuid.uuid4().hex
+    filename = FILENAME_TEMPLATE.format(id)
 
-    outputs = model.predict(np.array([preprocess_image(img_raw)]))[0]
+    bucket = client.get_bucket(BUCKET)
+    blob = bucket.blob(filename)
+    blob.upload_from_string(converted_image, content_type='image/jpg')
 
+    image = image_catalog.Image(user_confirmed='',
+                                image_url=filename,
+                                label='',
+                                created_at=int(time.time()))
+    image_id = image_catalog.add_image(image)
+
+    img_preprocessed = preprocess_image(img_raw)
+    outputs = model.predict(tf.expand_dims(img_preprocessed, 0))[0]
     pred_class = classes[np.argmax(outputs)]
 
-    return (jsonify([id, str(pred_class), [float(i) for i in outputs]), 200, headers)
+    return (jsonify([id, str(pred_class), [float(i) for i in outputs]]), 200, headers)

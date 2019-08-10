@@ -35,11 +35,18 @@ FilePond.setOptions({
 const pond = FilePond.create(document.querySelector('input[type="file"]'));
 var replaced = false;
 pond.on("processfile", (error, file) => {
+  let prediction = document.querySelector(`#prediction`);
+  let outputTable = document.querySelector(`#output`);
+  let classCount = 2;
+  prediction.innerHTML = 'Prediction: '
+  for (i = 0; i < classCount; i++) {
+    outputTable.rows[i + 1].cells[1].innerHTML = '';
+    outputTable.rows[i + 1].classList.remove('is-selected');
+  }
   if (error === null) {
     let data = JSON.parse(file.serverId);
-    console.log(data);
-    let prediction = document.querySelector(`#prediction`);
-    let outputTable = document.querySelector(`#output`);
+    // console.log(data);
+
 
     prediction.innerHTML = 'Prediction: ' + data[1].toString();
     max = data[2][0];
