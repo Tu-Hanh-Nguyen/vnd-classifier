@@ -2,6 +2,8 @@
 
 In this project, I implement a classifier for the currency of Vietnam, the Vietnam Dong (VND). The idea is a website that user can capture an image of VND note which could be 1k, 2k, 5k, 10k, 20k, 50k, 100k, 200k, and 500k (9 classes), and then the app will recognize the value of the note.
 
+Demo app: https://cs-currency-classifier.appspot.com/#
+
 The technical problems to solve:
 * How to train a deep learning model to classify the note?
 * How to deploy the model in a web application?
