@@ -1,4 +1,9 @@
 # Python pycache:
-*/__pycache__
+__pycache__
 # Ignored by the build system
 /setup.cfg
+
+.vscode
+init.sh
+.gloudignore
+env
