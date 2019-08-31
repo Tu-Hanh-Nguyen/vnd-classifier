@@ -1,0 +1,9 @@
+{
+  apiKey: "AIzaSyD2k_NjEzpyVIVYRNI1GJJy_JeT21aUid8",
+  authDomain: "fastai-248608.firebaseapp.com",
+  databaseURL: "https://fastai-248608.firebaseio.com",
+  projectId: "fastai-248608",
+  storageBucket: "fastai-248608.appspot.com",
+  messagingSenderId: "362821834635",
+  appId: "1:362821834635:web:45b6cd44f4615a37"
+};
