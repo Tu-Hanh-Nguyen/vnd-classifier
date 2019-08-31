@@ -17,7 +17,6 @@ runtime: python37
 env_variables:
   GCP_PROJECT: "cs-currency-classifier"
   GCS_BUCKET: "cs-cc-bucket"
-  FIREBASE_CONFIG: "firebase_config.json"
 
 handlers:
   - url: /static
