@@ -15,8 +15,8 @@
 runtime: python37
 # instance_class: F4_1G
 env_variables:
-  GCP_PROJECT: "cs-currency-classifier"
-  GCS_BUCKET: "cs-cc-bucket"
+  GCP_PROJECT: "YOUR-PROJECT"
+  GCS_BUCKET: "YOUR-BUCKET"
 
 handlers:
   - url: /static

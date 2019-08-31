@@ -65,8 +65,8 @@ gcloud config set project PROJECT_ID
 ```
 
 **Deploy to App Engine:**
-Open a terminal and switch to the `app/` directory. Edit `app/app.yaml` and replace `cs-currency-classifier`,
-`cs-cc-bucket`, with values of your own. `app.yaml`
+Open a terminal and switch to the `app/` directory. Edit `app/app.yaml` and replace `YOUR-PROJECT`,
+`YOUR-BUCKET`, with values of your own. `app.yaml`
 is the App Engine configuration file. Then run the command below
 
 ```
